@@ -4,8 +4,14 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
+A blog about biostatistics, data, and data science in the music city.
+Helmed by Lucy D’Agostino and McGowan Nick Strayer. We are both PhD students in
+the Department of Biostatistics at Vanderbilt University in Nashville, Tennessee.
 
-You can find the source code for the Jekyll new theme at: [github.com/jglovier/jekyll-new](https://github.com/jglovier/jekyll-new)
+<div style="text-align: center;">
+    <img src = "{{ site.baseurl }}/assets/lucyPhoto.jpg" alt = "Lucy" width = "250">
+    <img src = "{{ site.baseurl }}/assets/nickPhoto.jpg" alt = "Lucy" width = "250">
+</div>
 
-You can find the source code for Jekyll at [github.com/jekyll/jekyll](https://github.com/jekyll/jekyll)
+This blog is a repository of all the stuff data, math, stats and random that we
+find interesting.
