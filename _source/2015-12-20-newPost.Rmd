@@ -1,0 +1,51 @@
+---
+layout: post
+title:  "How To Write a Post"
+categories: [jekyll, rstats]
+tags: [knitr, servr, httpuv, websocket]
+---
+
+Hello, Fellow Stats Blogger!
+
+Say one desires to post to this venerable blog. How would you do that? 
+
+## Step 1: 
+
+__Fork the repo:__
+
+Go to [github.com/nstrayer/nashvilleBioStats](http://github.com/nstrayer/nashvilleBioStats) and fork the repository (upper right corner).
+
+<div style="text-align: center;">
+    <img src = "{{ site.baseurl }}/assets/tutorial/fork.png" alt = "Forking">
+</div>
+
+Once you have the repo forked it should look approximately like the photo above. From there, copy the url in the "HTTPS" box and in the command line run: `git clone <yourURL>`. 
+
+Now get into the newly deposited repository (`cd nashvilleBioStats`). Once inside of this repo really only one thing matters and that is the `_source` directory. If you navigate inside of it you will see that there are a bunch of `.Rmd` files in it. This is where the magic happens. 
+
+---
+
+## Step 2: 
+
+__Make a new post:__
+
+At this point you could just generate a new `Rmd` in anyway you desire, but for the sake of sanity I would suggest copying an existing one in the `_source/` directory as the header is a tad bit different than what you probably have used before. (Alternatively you could just start from scratch and make sure to copy in the top of an already used file.)
+
+### File Naming: 
+
+This is important. The name of the file you use helps the blog know information about it. You must start the file name with the date in the format `year-month-day-postTitle.Rmd`. 
+
+For example: if I were to create a simple post I would do the following in the terminal. 
+
+```{bash}
+cd nashvilleBioStats/_source
+cp 2015-12-19-howTo.Rmd 2015-12-20-newPost.Rmd
+rStudio 2015-12-20-newPost.Rmd
+```
+
+
+```{r, fig.align='center'}
+hist(rexp(1000, 2))
+```
+
+$$f(x) = math$$
