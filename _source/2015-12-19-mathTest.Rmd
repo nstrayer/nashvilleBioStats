@@ -1,0 +1,11 @@
+---
+layout: post
+author: "Nick"
+title:  "Math Test"
+categories: [jekyll, rstats]
+tags: [knitr, servr, httpuv, websocket]
+---
+
+We like math, right?
+
+$$f(x) = \frac{e^{-\lambda} \lambda^x}{x!}$$
