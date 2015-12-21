@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "Testing Again"
+categories: [jekyll, rstats]
+tags: [knitr, servr, httpuv, websocket]
+---
+
+Why oh why wouldnt this just work?
+
+```{r, fig.align='center'}
+hist(rexp(1000, 2))
+```
+
+$$f(x) = math$$
