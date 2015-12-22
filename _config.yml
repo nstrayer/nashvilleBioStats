@@ -4,9 +4,10 @@ email: n.strayer@vanderbilt.edu
 description: > # this means to ignore newlines until "baseurl:"
  A blog about biostatistics, data, and data science in the music city. Helmed by Nick Strayer and
   Lucy D’Agostino McGowan
+footer: Ask not what your data can do for you, but what you can do for your data. -Michael Scott
 baseurl: "/nashvilleBioStats/" # the subpath of your site, e.g. /blog/
 url: "http://nickstrayer.me" # the base hostname & protocol for your site
-twitter_username: nicholasstrayer
+twitter_username: nashvilleBios
 github_username:  nstrayer
 permalink: /:year/:month/:title.html
 
