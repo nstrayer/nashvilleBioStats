@@ -7,7 +7,10 @@ tags: [data visualization, rstats, plots]
 desc: A random walk style visualization of word and sentence shape. 
 ---
 
-
+```{r global_options, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(fig.width=10, fig.align = 'center', fig.height=6, warning=FALSE, message=FALSE)
+```
 
 ## Intro: 
 
@@ -22,8 +25,7 @@ The plotting and walk code is almost unabashedly wholesale taken from Nadieh Bre
 We will take a string and split it on each letter. From here we will assign a number from 1-26 to each letter corresponding to their position in the alphabet. E.g. a = 1, b = 2, etc. We allow a space to equal 27. 
 
 
-
-{% highlight r %}
+```{r}
 stringToVec = function(string){
   string = tolower(string) #get all the string to lowercase
   dict = c(letters, c(" "))
@@ -35,18 +37,11 @@ stringToVec = function(string){
 }
 # A simple test: 
 (test = stringToVec("Hello, World"))
-{% endhighlight %}
-
-
-
-{% highlight text %}
-##  [1]  8  5 12 12 15  0 27 23 15 18 12  4
-{% endhighlight %}
+```
 
 Awesome, now that we have that we just need a way to translate these numbers into a random-walk style coordinate list. 
 
-
-{% highlight r %}
+```{r}
 toRW = function(vec){
   
   N <- length(vec)
@@ -71,32 +66,31 @@ toRW = function(vec){
 
 #again test this to make sure it's working. 
 kable(toRW(test))
-{% endhighlight %}
+```
 
 
+```{r, echo = FALSE}
+library(ggplot2)
+library(fields)
+#Several color schemes
+colors <- c("#790c40","#c82f41","#e86c3c","#e6b25d","#e8ecb8","#abdc6b","#60ce43","#1cb53b","#008c43","#005540")
+cubeColors <- c("#6d3fa9","#bf3cae","#fe4b82","#ff7746","#e2b72e","#afef5a","#52f566","#1ddea3","#23aad8","#4c6edb","#6d3fa9")
+heatColors <- c("#790c40","#c82f41","#e86c3c","#e6b25d")
+rainbowCol <- c("#6363FF", "#6373FF", "#63A3FF", "#63E3FF", "#63FFFB", "#63FFCB","#63FF9B", "#63FF6B", "#7BFF63", "#BBFF63", 
+                "#DBFF63", "#FBFF63", "#FFD363", "#FFB363", "#FF8363", "#FF7363", "#FF6364")
+greenColors <- c("#8be990","#64bf8b","#349584","#206a81","#263c81","#000080")
+blueColors <- c("#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081")
+rainbowColDark <- c("#EFB605","#EB8612","#DD0030","#B3005A","#80348F","#3365AA","#07A071","#7EB852")
+rainbowColDark <- designer.colors(n=10, col=rainbowColDark)
 
-| val|          x|          y| ID| ColID|
-|---:|----------:|----------:|--:|-----:|
-|   8|  0.0000000|  0.0000000|  1|     1|
-|   5|  0.9182161|  0.3960798|  2|     2|
-|  12|  1.2602363| -0.5436129|  3|     3|
-|  12|  1.6022564| -1.4833055|  4|     4|
-|  15|  1.2602363| -2.4229981|  5|     5|
-|   0|  1.2602363| -1.4229981|  6|     6|
-|  27|  1.2602363| -0.4229981|  7|     7|
-|  23|  0.4581131|  0.1741605|  8|     8|
-|  15|  0.1160929| -0.7655321|  9|     9|
-|  18| -0.7499325| -1.2655321| 10|    10|
-|  12| -0.4079123| -2.2052247| 11|    11|
-|   4|  0.3942108| -1.6080662| 12|    12|
-
-
-
+#To loop over a color scheme every Ncols digits
+Ncols <- 500
+ColRamp <- designer.colors(n=Ncols, col=cubeColors)
+```
 
 Now make a plot function to draw the "random" walk. 
 
-
-{% highlight r %}
+```{r}
 plotRW <- function(rwData){
   rwPlot <- ggplot(rwData, aes(x=x, y=y, group="1")) +
     geom_path(aes(color = factor(val)), size=0.5) + 
@@ -111,23 +105,38 @@ plotRW <- function(rwData){
           panel.background = element_blank())
   return(rwPlot)
 }
-{% endhighlight %}
+```
 
 ## Now to test it out. 
 
-__Nicholas Strayer__
-
-{% highlight r %}
+<div style="text-align: center; font-weight: bold">"Nicholas Strayer"</div>
+```{r}
 plotRW(toRW(stringToVec("Nicholas Strayer")))
-{% endhighlight %}
+```
 
-<img src="/nashvilleBioStats/figures/source/2015-12-22-distributionShapes/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+---
 
-__Vanderbilt University__
-<img src="/nashvilleBioStats/figures/source/2015-12-22-distributionShapes/unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
+<br>
 
-__Nashville Tennessee__
-<img src="/nashvilleBioStats/figures/source/2015-12-22-distributionShapes/unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
+<div style="text-align: center; font-weight: bold">"Vanderbilt University"</div>
+```{r, echo = FALSE}
+plotRW(toRW(stringToVec("Vanderbilt University")))
+```
 
-__Biostatistics are Best Statistics__
-<img src="/nashvilleBioStats/figures/source/2015-12-22-distributionShapes/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
+---
+
+<br>
+
+<div style="text-align: center; font-weight: bold">"Nashville Tennessee"</div>
+```{r, echo = FALSE}
+plotRW(toRW(stringToVec("Nashville Tennessee")))
+```
+
+---
+
+<br>
+
+<div style="text-align: center; font-weight: bold">"Biostatistics are best statistics"  </div>
+```{r, echo = FALSE}
+plotRW(toRW(stringToVec("Biostatistics are Best Statistics")))
+```
