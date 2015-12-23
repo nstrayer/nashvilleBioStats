@@ -2,8 +2,9 @@
 layout: post
 author: "Nick"
 title:  "Shape of Words"
+date: 2015-12-22 01:00:00
 categories: [data visualization, rstats]
-tags: [data visualization, rstats, plots]
+tags: [data visualization, rstats, plots, random-walk]
 desc: A random walk style visualization of word and sentence shape. 
 ---
 
