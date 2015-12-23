@@ -1,0 +1,142 @@
+---
+layout: post
+author: "Nick"
+title:  "Shape of Words"
+categories: [data visualization, rstats]
+tags: [data visualization, rstats, plots]
+desc: A random walk style visualization of word and sentence shape. 
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(fig.width=10, fig.align = 'center', fig.height=6, warning=FALSE, message=FALSE)
+```
+
+## Intro: 
+
+After seeing [The Art of Pi](http://www.visualcinnamon.com/portfolio/the-art-in-pi) by Nadieh Bremer. I was inspired to use this random-walk style technique to interrogate the shape of other things. Pretty much every non-real number had already been taken so I figured why not move out of the math domain and into something more... personal. 
+
+Many efforts have been made to look into the "shape" of stories (see the post above this one for my take on that,) but not much attention has been paid to a smaller scale. By converting a word or small sentence to a series of numbers and then generating a walk based upon those numbers we are able to construct a kind of fingerprint for any given set of characters. Keep in mind this fingerprint means absolutely nothing is arbitrary in the most pure sense of the word, but it is interesting none-the-less. 
+
+The plotting and walk code is almost unabashedly wholesale taken from Nadieh Bremer's [github repo](https://github.com/nbremer/artinpi) for her project.
+
+## Converting a string to numbers: 
+
+We will take a string and split it on each letter. From here we will assign a number from 1-26 to each letter corresponding to their position in the alphabet. E.g. a = 1, b = 2, etc. We allow a space to equal 27. 
+
+
+```{r}
+stringToVec = function(string){
+  string = tolower(string) #get all the string to lowercase
+  dict = c(letters, c(" "))
+  as.vector(sapply(strsplit(string, "")[[1]],  function(d){
+    if(d %in% dict){
+      return(which(dict == d) ) #ignore non-coded characters
+    } else return(0)
+    }))
+}
+# A simple test: 
+(test = stringToVec("Hello, World"))
+```
+
+Awesome, now that we have that we just need a way to translate these numbers into a random-walk style coordinate list. 
+
+```{r}
+toRW = function(vec){
+  
+  N <- length(vec)
+  Ncols <- 500
+  largest <- 27 
+  
+  x <- y <- rep(NULL, length(vec))
+  x[1] <- 0
+  y[1] <- 0
+  
+  #Calculate new position for each digit, based on the position of the old digit and the 
+  #angle is determined by the digit itself
+  for (i in 2:length(vec)){
+      x[i] <- x[(i-1)] + sin((pi*2)*(vec[i]/largest)) #scale by largest observed val
+      y[i] <- y[(i-1)] + cos((pi*2)*(vec[i]/largest)) 
+  }#for i
+  
+  #Return the dataframe. 
+  data.frame(val=vec, x=x, y=y, ID=1:(length(x)), 
+             ColID = 1:(length(x))%%Ncols, stringsAsFactors=F)
+}
+
+#again test this to make sure it's working. 
+kable(toRW(test))
+```
+
+
+```{r, echo = FALSE}
+library(ggplot2)
+library(fields)
+#Several color schemes
+colors <- c("#790c40","#c82f41","#e86c3c","#e6b25d","#e8ecb8","#abdc6b","#60ce43","#1cb53b","#008c43","#005540")
+cubeColors <- c("#6d3fa9","#bf3cae","#fe4b82","#ff7746","#e2b72e","#afef5a","#52f566","#1ddea3","#23aad8","#4c6edb","#6d3fa9")
+heatColors <- c("#790c40","#c82f41","#e86c3c","#e6b25d")
+rainbowCol <- c("#6363FF", "#6373FF", "#63A3FF", "#63E3FF", "#63FFFB", "#63FFCB","#63FF9B", "#63FF6B", "#7BFF63", "#BBFF63", 
+                "#DBFF63", "#FBFF63", "#FFD363", "#FFB363", "#FF8363", "#FF7363", "#FF6364")
+greenColors <- c("#8be990","#64bf8b","#349584","#206a81","#263c81","#000080")
+blueColors <- c("#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081")
+rainbowColDark <- c("#EFB605","#EB8612","#DD0030","#B3005A","#80348F","#3365AA","#07A071","#7EB852")
+rainbowColDark <- designer.colors(n=10, col=rainbowColDark)
+
+#To loop over a color scheme every Ncols digits
+Ncols <- 500
+ColRamp <- designer.colors(n=Ncols, col=cubeColors)
+```
+
+Now make a plot function to draw the "random" walk. 
+
+```{r}
+plotRW <- function(rwData){
+  rwPlot <- ggplot(rwData, aes(x=x, y=y, group="1")) +
+    geom_path(aes(color = factor(val)), size=0.5) + 
+    coord_fixed(ratio = 1) + 
+    theme_bw() +
+    theme(line = element_blank(),
+          text = element_blank(),
+          line = element_blank(),
+          title = element_blank(),
+          legend.position="none",
+          panel.border = element_blank(),
+          panel.background = element_blank())
+  return(rwPlot)
+}
+```
+
+## Now to test it out. 
+
+<div style="text-align: center; font-weight: bold">"Nicholas Strayer"</div>
+```{r}
+plotRW(toRW(stringToVec("Nicholas Strayer")))
+```
+
+---
+
+<br>
+
+<div style="text-align: center; font-weight: bold">"Vanderbilt University"</div>
+```{r, echo = FALSE}
+plotRW(toRW(stringToVec("Vanderbilt University")))
+```
+
+---
+
+<br>
+
+<div style="text-align: center; font-weight: bold">"Nashville Tennessee"</div>
+```{r, echo = FALSE}
+plotRW(toRW(stringToVec("Nashville Tennessee")))
+```
+
+---
+
+<br>
+
+<div style="text-align: center; font-weight: bold">"Biostatistics are best statistics"  </div>
+```{r, echo = FALSE}
+plotRW(toRW(stringToVec("Biostatistics are Best Statistics")))
+```
