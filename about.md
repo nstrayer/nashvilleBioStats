@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-Musings on biostatistics, data, and data science in the music city.
+Musings on biostatistics, data visualization, and general quantitative science in the music city.
 Helmed by Lucy D’Agostino McGowan and Nick Strayer. We are both PhD students in
 the Department of Biostatistics at Vanderbilt University in Nashville, Tennessee.
 
@@ -13,5 +13,4 @@ the Department of Biostatistics at Vanderbilt University in Nashville, Tennessee
     <img src = "{{ site.baseurl }}/assets/nickPhoto.jpg" alt = "Nick" width = "250">
 </div>
 
-This is a repository of all the stuff data, math, stats and random that we
-find interesting.
+This is a repository of all the stuff that we find interesting. We hope you will too.

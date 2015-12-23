@@ -30,24 +30,17 @@ Now, as before, we translate these values into random-walk coordinates.
 
 {% highlight r %}
 toRW = function(vec){
-  
   N <- length(vec)
-  Ncols <- 500
-  
   x <- y <- rep(NULL, length(vec))
   x[1] <- 0
   y[1] <- 0
   
-  #Calculate new position for each digit, based on the position of the old digit and the 
-  #angle is determined by the digit itself
   for (i in 2:length(vec)){
-      x[i] <- x[(i-1)] + sin( vec[i] ) #scale by largest observed val
+      x[i] <- x[(i-1)] + sin( vec[i] )
       y[i] <- y[(i-1)] + cos( vec[i] ) 
-  }#for i
-  
+  }
   #Return the dataframe. 
-  data.frame(val=vec, x=x, y=y, ID=1:(length(x)), 
-             ColID = 1:(length(x))%%Ncols, stringsAsFactors=F)
+  data.frame(val=vec, x=x, y=y, stringsAsFactors=F)
 }
 
 #again test this to make sure it's working. 
@@ -56,25 +49,24 @@ kable(head(toRW(primes)))
 
 
 
-| val|          x|          y| ID| ColID|
-|---:|----------:|----------:|--:|-----:|
-|   2|  0.0000000|  0.0000000|  1|     1|
-|   3|  0.1411200| -0.9899925|  2|     2|
-|   5| -0.8178043| -0.7063303|  3|     3|
-|   7| -0.1608177|  0.0475719|  4|     4|
-|  11| -1.1608079|  0.0519976|  5|     5|
-|  13| -0.7406408|  0.9594444|  6|     6|
-
-
-
+| val|          x|          y|
+|---:|----------:|----------:|
+|   2|  0.0000000|  0.0000000|
+|   3|  0.1411200| -0.9899925|
+|   5| -0.8178043| -0.7063303|
+|   7| -0.1608177|  0.0475719|
+|  11| -1.1608079|  0.0519976|
+|  13| -0.7406408|  0.9594444|
 
 Make a plot function to draw the walk. 
 
 
 {% highlight r %}
+library(ggplot2)
+
 plotRW <- function(rwData){
   rwPlot <- ggplot(rwData, aes(x=x, y=y, group="1")) +
-    geom_path(aes(color = factor(val)), size=0.5) + 
+    geom_path(aes(color = factor(val)), size=0.5, alpha = 0.5) + 
     coord_fixed(ratio = 1) + 
     theme_bw() +
     theme(line = element_blank(),
@@ -96,4 +88,4 @@ plotRW <- function(rwData){
 plotRW(toRW(primes))
 {% endhighlight %}
 
-<img src="/nashvilleBioStats/figures/source/2015-12-22-primeWalk/unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+<img src="/nashvilleBioStats/figures/source/2015-12-22-primeWalk/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
