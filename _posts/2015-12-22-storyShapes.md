@@ -2,8 +2,9 @@
 layout: post
 author: "Nick"
 title:  "Shape of a Story"
+date: 2015-12-22 03:00:00
 categories: [data visualization, rstats]
-tags: [data visualization, rstats, plots]
+tags: [data visualization, rstats, plots, random-walk]
 desc: "A look at the shape of a New York Times article through the lens of happiness."
 ---
 

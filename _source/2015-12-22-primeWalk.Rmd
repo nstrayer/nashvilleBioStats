@@ -1,0 +1,102 @@
+---
+layout: post
+author: "Nick"
+title:  "Shape of Primes"
+date: 2015-12-22 05:00:00
+categories: [data visualization, rstats]
+tags: [data visualization, rstats, plots, random-walk]
+desc: A random walk style visualization of the first 100,000 prime numbers. 
+---
+
+```{r global_options, include=FALSE}
+library(knitr)
+knitr::opts_chunk$set(fig.width=10, fig.align = 'center', fig.height=6, warning=FALSE, message=FALSE)
+```
+
+## Intro: 
+
+See [this]({{site.baseurl}}/2015/12/storyShapes.html) and [this]({{site.baseurl}}/2015/12/wordShapes.html) post for my intro on random-walk style visualizations. 
+
+## Prime Numbers: 
+
+Let's try a random-walk based upon the first 100,000 prime numbers. 
+
+First we load in the data obtained from [here](https://www.mathsisfun.com/numbers/prime-number-lists.html).
+
+```{r}
+primes = read.table("/Users/Nick/Dropbox/vandy/musicCityStats/nashvilleBioStats/assets/primes-to-100k.txt")$V1
+```
+
+Now, as before, we translate these values into random-walk coordinates. 
+
+```{r}
+toRW = function(vec){
+  
+  N <- length(vec)
+  Ncols <- 500
+  
+  x <- y <- rep(NULL, length(vec))
+  x[1] <- 0
+  y[1] <- 0
+  
+  #Calculate new position for each digit, based on the position of the old digit and the 
+  #angle is determined by the digit itself
+  for (i in 2:length(vec)){
+      x[i] <- x[(i-1)] + sin( vec[i] ) #scale by largest observed val
+      y[i] <- y[(i-1)] + cos( vec[i] ) 
+  }#for i
+  
+  #Return the dataframe. 
+  data.frame(val=vec, x=x, y=y, ID=1:(length(x)), 
+             ColID = 1:(length(x))%%Ncols, stringsAsFactors=F)
+}
+
+#again test this to make sure it's working. 
+kable(head(toRW(primes)))
+```
+
+
+```{r, echo = FALSE}
+library(ggplot2)
+library(fields)
+#Several color schemes
+colors <- c("#790c40","#c82f41","#e86c3c","#e6b25d","#e8ecb8","#abdc6b","#60ce43","#1cb53b","#008c43","#005540")
+cubeColors <- c("#6d3fa9","#bf3cae","#fe4b82","#ff7746","#e2b72e","#afef5a","#52f566","#1ddea3","#23aad8","#4c6edb","#6d3fa9")
+heatColors <- c("#790c40","#c82f41","#e86c3c","#e6b25d")
+rainbowCol <- c("#6363FF", "#6373FF", "#63A3FF", "#63E3FF", "#63FFFB", "#63FFCB","#63FF9B", "#63FF6B", "#7BFF63", "#BBFF63", 
+                "#DBFF63", "#FBFF63", "#FFD363", "#FFB363", "#FF8363", "#FF7363", "#FF6364")
+greenColors <- c("#8be990","#64bf8b","#349584","#206a81","#263c81","#000080")
+blueColors <- c("#a8ddb5","#7bccc4","#4eb3d3","#2b8cbe","#0868ac","#084081")
+rainbowColDark <- c("#EFB605","#EB8612","#DD0030","#B3005A","#80348F","#3365AA","#07A071","#7EB852")
+rainbowColDark <- designer.colors(n=10, col=rainbowColDark)
+
+#To loop over a color scheme every Ncols digits
+Ncols <- 500
+ColRamp <- designer.colors(n=Ncols, col=cubeColors)
+```
+
+Make a plot function to draw the walk. 
+
+```{r}
+plotRW <- function(rwData){
+  rwPlot <- ggplot(rwData, aes(x=x, y=y, group="1")) +
+    geom_path(aes(color = factor(val)), size=0.5) + 
+    coord_fixed(ratio = 1) + 
+    theme_bw() +
+    theme(line = element_blank(),
+          text = element_blank(),
+          line = element_blank(),
+          title = element_blank(),
+          legend.position="none",
+          panel.border = element_blank(),
+          panel.background = element_blank())
+  return(rwPlot)
+}
+```
+
+## Plot it! 
+
+<div style="text-align: center; font-weight: bold">The First 100,000 Primes</div>
+```{r}
+plotRW(toRW(primes))
+```
