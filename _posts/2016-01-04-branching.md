@@ -47,7 +47,7 @@ Say you have a pull request from the branch `problemBranch` with a merge conflic
   {% highlight bash %}
   git merge master
   {% endhighlight %}
-  Git ever so kindly automatically modifies the files with conflicts in them to point out the points where they overlap. (If you want to see a list of the files that have this problem simply run the command `git diff --name-only --diff-filter=U`.)
+  Git ever so kindly automatically modifies the files with conflicts in them to point out where they overlap. (If you want to see a list of the files that have this problem simply run the command `git diff --name-only --diff-filter=U`.)
   
   Now head to the file (or files) in question to see the conflict. 
 
