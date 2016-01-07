@@ -14,7 +14,7 @@ desc: A quick tutorial on how to deal with conflicts in pull requests.
 
 Unfortunately github can't handle this in browser. 
 
-It is up to the lord of the repository to handle this. 
+It is up to the lord of the repository (you) to handle this. 
 
 Say you have a pull request from the branch `problemBranch` with a merge conflict to master: 
 
@@ -66,7 +66,7 @@ At this point you must decide which line to keep (, or include both of them) and
 </div>
 
 5) Now merge the conflict free branch to master. 
-  You can do this in either the github interface (see previous) or the command line. 
+  You can do this in either the github interface (see previous) or the command line:
   
 
 {% highlight bash %}
