@@ -48,3 +48,5 @@ You can do this entirely in the command line by simply merging; but I personally
 
 In a service like github you have the great convenience of a nice user interface to do all this. I now do almost all of my merging this way. (Althugh sometimes you can't. See my [merge conflicts post.](http://nickstrayer.me/nashvilleBioStats//2016/01/branching.html))
 
+(Tutorial on flow)[https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow ]
+
